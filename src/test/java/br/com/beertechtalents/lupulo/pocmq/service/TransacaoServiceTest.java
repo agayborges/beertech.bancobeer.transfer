@@ -46,15 +46,4 @@ public class TransacaoServiceTest {
         transacaoService.salvarTransacao(transacao);
     }
 
-
-    @Test
-    public void buscarSaldoTest() {
-
-        Mockito.when(transacaoRepository.somaSaldo()).then(i -> BigDecimal.TEN);
-
-        BigDecimal saldo = transacaoService.buscarSaldo();
-
-        Assertions.assertEquals(BigDecimal.TEN, saldo);
-    }
-
 }

@@ -28,4 +28,8 @@ public class Transacao {
     @CreatedDate
     private Timestamp datahora;
 
+    @ManyToOne
+    @Column(nullable = false)
+    private ContaCorrente contaCorrente;
+
 }

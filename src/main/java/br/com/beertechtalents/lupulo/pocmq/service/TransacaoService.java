@@ -18,8 +18,4 @@ public class TransacaoService {
         transacaoRepository.save(transacao);
     }
 
-    public BigDecimal buscarSaldo(){
-        return transacaoRepository.somaSaldo();
-    }
-
 }

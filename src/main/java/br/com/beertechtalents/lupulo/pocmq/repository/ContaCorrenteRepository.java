@@ -1,5 +1,6 @@
 package br.com.beertechtalents.lupulo.pocmq.repository;
 
+import br.com.beertechtalents.lupulo.pocmq.model.ContaCorrente;
 import br.com.beertechtalents.lupulo.pocmq.model.Transacao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,8 +10,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Repository
-public interface TransacaoRepository extends JpaRepository<Transacao, Long> {
+public interface ContaCorrenteRepository extends JpaRepository<ContaCorrente, Long>  {
 
-    @Query("Select SUM(t.valor) FROM Transacao t WHERE t.contaCorrente.hash = ?1")
-    BigDecimal somaSaldo(UUID hash);
 }
