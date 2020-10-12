@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -36,10 +37,18 @@ public class ContaCorrenteController {
     @ApiOperation(value = "Busca saldo total pelo hash da conta-corrente", nickname = "GET", notes = "Busca o saldo total", response = BigDecimal.class, tags = {"tool",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "successful operation", response = BigDecimal.class),
-            @ApiResponse(code = 400, message = "Invalid status value")})
+            @ApiResponse(code = 404, message = "Conta Corrente not found")})
     @GetMapping(path = "/{hash}")
-    public ResponseEntity<BigDecimal> getSaldo(@PathVariable UUID hash) {
-        return new ResponseEntity<>(contaCorrenteService.buscarSaldoPorHash(hash), HttpStatus.OK);
+    public ResponseEntity<BigDecimal> getSaldo(@PathVariable String hash) {
+        Optional<BigDecimal> optionalSaldo = contaCorrenteService.buscarSaldoPorHash(hash);
+
+        if (optionalSaldo.isPresent()) {
+            return new ResponseEntity<>(optionalSaldo.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+
     }
 
 }

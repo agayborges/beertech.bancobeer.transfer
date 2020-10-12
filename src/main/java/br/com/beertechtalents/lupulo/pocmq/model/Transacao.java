@@ -1,6 +1,7 @@
 package br.com.beertechtalents.lupulo.pocmq.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,6 +12,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
+@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Transacao {
 
@@ -29,7 +31,13 @@ public class Transacao {
     private Timestamp datahora;
 
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private ContaCorrente contaCorrente;
+
+    public Transacao(TipoTransacao tipo, BigDecimal valor, ContaCorrente contaCorrente) {
+        this.tipo = tipo;
+        this.valor = valor;
+        this.contaCorrente = contaCorrente;
+    }
 
 }

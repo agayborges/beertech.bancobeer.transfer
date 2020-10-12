@@ -1,5 +1,6 @@
 package br.com.beertechtalents.lupulo.pocmq.service;
 
+import br.com.beertechtalents.lupulo.pocmq.model.ContaCorrente;
 import br.com.beertechtalents.lupulo.pocmq.model.TipoTransacao;
 import br.com.beertechtalents.lupulo.pocmq.model.Transacao;
 import br.com.beertechtalents.lupulo.pocmq.repository.TransacaoRepository;
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
 public class TransacaoServiceTest {
@@ -31,10 +33,11 @@ public class TransacaoServiceTest {
 
     @Test
     public void saveTest() {
-        Transacao transacao = new Transacao();
-        transacao.setTipo(TipoTransacao.DEPOSITO);
-        transacao.setValor(BigDecimal.TEN);
+        ContaCorrente contaCorrente = new ContaCorrente();
+        contaCorrente.setId(1l);
+        contaCorrente.setHash(UUID.randomUUID().toString());
 
+        Transacao transacao = new Transacao(TipoTransacao.DEPOSITO, BigDecimal.TEN, contaCorrente);
 
         Mockito.when(transacaoRepository.save(Mockito.any(Transacao.class))).then(i -> {
             Transacao t = (Transacao) i.getArguments()[0];
@@ -44,6 +47,37 @@ public class TransacaoServiceTest {
         });
 
         transacaoService.salvarTransacao(transacao);
+    }
+
+    @Test
+    public void saveTransferencia() {
+        ContaCorrente origem = new ContaCorrente();
+        origem.setId(1l);
+        origem.setHash(UUID.randomUUID().toString());
+
+        ContaCorrente destino = new ContaCorrente();
+        destino.setId(2l);
+        destino.setHash(UUID.randomUUID().toString());
+
+        Mockito.when(transacaoRepository.save(Mockito.any(Transacao.class))).then(i -> {
+            Transacao t = (Transacao) i.getArguments()[0];
+
+            ContaCorrente contaCorrente = t.getContaCorrente();
+
+            if (contaCorrente.getId() == origem.getId()) {
+                Assertions.assertEquals(TipoTransacao.SAQUE, t.getTipo());
+                Assertions.assertEquals(BigDecimal.TEN.negate().doubleValue(), t.getValor().doubleValue(), 0.01);
+            } else {
+                Assertions.assertEquals(TipoTransacao.DEPOSITO, t.getTipo());
+                Assertions.assertEquals(BigDecimal.TEN, t.getValor());
+            }
+
+            t.setId(1l);
+            t.setDatahora(new Timestamp(10000l));
+            return t;
+        });
+
+        transacaoService.transferencia(origem, destino, BigDecimal.TEN);
     }
 
 }

@@ -34,14 +34,25 @@ public class RabbitConfig {
     }
 
     @Bean
+    public Queue inboundWireTransferQueue() {
+        return new Queue("wire_transfer_inbound", true, false, false);
+    }
+
+    @Bean
     public Binding inboundOperationExchangeBinding() {
         return BindingBuilder.bind(inboundOperationQueue()).to(operationExchange()).with("*");
     }
 
     @RabbitListener(queues = {"operation_inbound"})
-    public void receive(final String msg) {
+    public void receiveOperation(final String msg) {
         System.out.println(msg);
-        transacaoAdapter.call(msg);
+        transacaoAdapter.operationCall(msg);
+    }
+
+    @RabbitListener(queues = {"wire_transfer_inbound"})
+    public void receiveWireTransfer(final String msg) {
+        System.out.println(msg);
+        transacaoAdapter.wireTransferCall(msg);
     }
 
 }
