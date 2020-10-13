@@ -10,6 +10,7 @@ import java.util.UUID;
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
+@Table(indexes = { @Index(name = "hasn_index", columnList = "hash") })
 public class ContaCorrente {
 
     @Id
