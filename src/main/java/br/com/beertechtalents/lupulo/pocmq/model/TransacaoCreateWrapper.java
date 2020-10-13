@@ -9,6 +9,6 @@ public class TransacaoCreateWrapper {
 
     private Transacao transacao;
 
-    private String hash;
+    private UUID hash;
 
 }

@@ -24,7 +24,7 @@ public class ContaCorrenteService {
         return contaCorrenteRepository.save(contaCorrente);
     }
 
-    public Optional<BigDecimal> buscarSaldoPorHash(String hash) {
+    public Optional<BigDecimal> buscarSaldoPorHash(UUID hash) {
         Optional<ContaCorrente> optionalConta = contaCorrenteRepository.findByHash(hash);
         if (optionalConta.isPresent()) {
             BigDecimal saldo = transacaoRepository.somaSaldo(optionalConta.get().getId());
@@ -39,7 +39,7 @@ public class ContaCorrenteService {
         }
     }
 
-    public Optional<ContaCorrente> findContaByHash(String hash) {
+    public Optional<ContaCorrente> findContaByHash(UUID hash) {
         return contaCorrenteRepository.findByHash(hash);
     }
 }

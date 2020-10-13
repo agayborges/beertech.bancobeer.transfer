@@ -28,7 +28,7 @@ public class TransacaoController {
 
     final ContaCorrenteService contaCorrenteService;
 
-    @ApiOperation(value = "Adiciona uma nova transacao", nickname = "POST", notes = "", tags = {"transacao",})
+    @ApiOperation(value = "Adiciona uma nova transacao", nickname = "POST")
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Conta Corrente not found")})
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})

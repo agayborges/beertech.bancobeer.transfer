@@ -13,5 +13,5 @@ import java.util.UUID;
 @Repository
 public interface ContaCorrenteRepository extends JpaRepository<ContaCorrente, Long>  {
 
-    Optional<ContaCorrente> findByHash(String hash);
+    Optional<ContaCorrente> findByHash(UUID hash);
 }

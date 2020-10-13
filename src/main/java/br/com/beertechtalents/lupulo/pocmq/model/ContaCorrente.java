@@ -10,20 +10,18 @@ import java.util.UUID;
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-@Slf4j
 public class ContaCorrente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(updatable = false, unique = true, nullable = false)
-    private String hash;
+    @Column(updatable = false, unique = true, nullable = false, columnDefinition = "BINARY(16)")
+    private UUID hash;
 
     @PrePersist
     private void prePersist() {
-        log.info("asdfsdf");
-        this.hash = UUID.randomUUID().toString();
+        this.hash = UUID.randomUUID();
     }
 
 }

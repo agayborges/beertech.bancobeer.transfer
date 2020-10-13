@@ -37,7 +37,7 @@ public class ContaCorrentServiceTest {
         Mockito.when(contaCorrenteRepository.save(Mockito.any(ContaCorrente.class))).then(i -> {
             ContaCorrente mockedConta = (ContaCorrente) i.getArguments()[0];
             mockedConta.setId(1l);
-            mockedConta.setHash(UUID.randomUUID().toString());
+            mockedConta.setHash(UUID.randomUUID());
             return mockedConta;
         });
 
@@ -52,13 +52,13 @@ public class ContaCorrentServiceTest {
     public void buscarSaldoTest() {
 
         Mockito.when(transacaoRepository.somaSaldo(Mockito.any(Long.class))).then(i -> BigDecimal.TEN);
-        Mockito.when(contaCorrenteRepository.findByHash(Mockito.any(String.class))).then(i -> {
+        Mockito.when(contaCorrenteRepository.findByHash(Mockito.any(UUID.class))).then(i -> {
             ContaCorrente contaCorrente = new ContaCorrente();
             contaCorrente.setId(1l);
             return Optional.of(contaCorrente);
         });
 
-        Optional<BigDecimal> optionalSaldo = contaCorrenteService.buscarSaldoPorHash(UUID.randomUUID().toString());
+        Optional<BigDecimal> optionalSaldo = contaCorrenteService.buscarSaldoPorHash(UUID.randomUUID());
 
         if (optionalSaldo.isPresent()) {
             Assertions.assertEquals(BigDecimal.TEN, optionalSaldo.get());
@@ -71,9 +71,9 @@ public class ContaCorrentServiceTest {
     @Test
     public void buscarSaldoContaNotFoundTest() {
 
-        Mockito.when(contaCorrenteRepository.findByHash(Mockito.any(String.class))).then(i -> Optional.empty());
+        Mockito.when(contaCorrenteRepository.findByHash(Mockito.any(UUID.class))).then(i -> Optional.empty());
 
-        Optional<BigDecimal> optionalSaldo = contaCorrenteService.buscarSaldoPorHash(UUID.randomUUID().toString());
+        Optional<BigDecimal> optionalSaldo = contaCorrenteService.buscarSaldoPorHash(UUID.randomUUID());
 
         if (optionalSaldo.isPresent()) {
             Assertions.fail();
@@ -84,13 +84,13 @@ public class ContaCorrentServiceTest {
     public void buscarSaldoEmptySaldoTest() {
 
         Mockito.when(transacaoRepository.somaSaldo(Mockito.any(Long.class))).then(i -> null);
-        Mockito.when(contaCorrenteRepository.findByHash(Mockito.any(String.class))).then(i -> {
+        Mockito.when(contaCorrenteRepository.findByHash(Mockito.any(UUID.class))).then(i -> {
             ContaCorrente contaCorrente = new ContaCorrente();
             contaCorrente.setId(1l);
             return Optional.of(contaCorrente);
         });
 
-        Optional<BigDecimal> optionalSaldo = contaCorrenteService.buscarSaldoPorHash(UUID.randomUUID().toString());
+        Optional<BigDecimal> optionalSaldo = contaCorrenteService.buscarSaldoPorHash(UUID.randomUUID());
 
         if (optionalSaldo.isPresent()) {
             Assertions.assertEquals(BigDecimal.ZERO, optionalSaldo.get());

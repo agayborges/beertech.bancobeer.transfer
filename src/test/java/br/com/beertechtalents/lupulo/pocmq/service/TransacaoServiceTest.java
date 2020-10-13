@@ -35,7 +35,7 @@ public class TransacaoServiceTest {
     public void saveTest() {
         ContaCorrente contaCorrente = new ContaCorrente();
         contaCorrente.setId(1l);
-        contaCorrente.setHash(UUID.randomUUID().toString());
+        contaCorrente.setHash(UUID.randomUUID());
 
         Transacao transacao = new Transacao(TipoTransacao.DEPOSITO, BigDecimal.TEN, contaCorrente);
 
@@ -53,11 +53,11 @@ public class TransacaoServiceTest {
     public void saveTransferencia() {
         ContaCorrente origem = new ContaCorrente();
         origem.setId(1l);
-        origem.setHash(UUID.randomUUID().toString());
+        origem.setHash(UUID.randomUUID());
 
         ContaCorrente destino = new ContaCorrente();
         destino.setId(2l);
-        destino.setHash(UUID.randomUUID().toString());
+        destino.setHash(UUID.randomUUID());
 
         Mockito.when(transacaoRepository.save(Mockito.any(Transacao.class))).then(i -> {
             Transacao t = (Transacao) i.getArguments()[0];

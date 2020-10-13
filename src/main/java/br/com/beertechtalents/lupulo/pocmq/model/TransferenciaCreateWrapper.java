@@ -8,9 +8,9 @@ import java.util.UUID;
 @Data
 public class TransferenciaCreateWrapper {
 
-    private String hashOrigem;
+    private UUID hashOrigem;
 
-    private String hashDestino;
+    private UUID hashDestino;
 
     private BigDecimal valor;
 }

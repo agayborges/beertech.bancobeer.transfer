@@ -21,11 +21,12 @@ import java.util.UUID;
 @RequestMapping("/conta-corrente")
 @Api(value = "Endpoints para Conta-Correntes")
 @RequiredArgsConstructor
+@Slf4j
 public class ContaCorrenteController {
 
     final ContaCorrenteService contaCorrenteService;
 
-    @ApiOperation(value = "Adiciona uma nova conta corrente", nickname = "POST", notes = "", tags = {"conta-corrente",})
+    @ApiOperation(value = "Adiciona uma nova conta corrente", nickname = "POST")
     @ApiResponses(value = {
             @ApiResponse(code = 405, message = "Invalid input")})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -34,12 +35,18 @@ public class ContaCorrenteController {
         return new ResponseEntity<>(contaCorrente, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Busca saldo total pelo hash da conta-corrente", nickname = "GET", notes = "Busca o saldo total", response = BigDecimal.class, tags = {"tool",})
+    @ApiOperation(value = "Busca saldo total pelo hash da conta-corrente", nickname = "GET", notes = "Busca o saldo total", response = BigDecimal.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "successful operation", response = BigDecimal.class),
             @ApiResponse(code = 404, message = "Conta Corrente not found")})
-    @GetMapping(path = "/{hash}")
-    public ResponseEntity<BigDecimal> getSaldo(@PathVariable String hash) {
+    @GetMapping(path = "/{hash}/saldo")
+    public ResponseEntity<BigDecimal> getSaldo(@PathVariable UUID hash) {
+        if (hash != null) {
+            log.info(hash.toString());
+        } else {
+            log.info("sem hash");
+        }
+
         Optional<BigDecimal> optionalSaldo = contaCorrenteService.buscarSaldoPorHash(hash);
 
         if (optionalSaldo.isPresent()) {
