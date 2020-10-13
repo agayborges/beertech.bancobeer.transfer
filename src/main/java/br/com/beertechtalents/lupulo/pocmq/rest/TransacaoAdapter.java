@@ -21,7 +21,7 @@ public class TransacaoAdapter {
         call("http://localhost:8080/transacao/transferencia", body);
     }
 
-    private void call (String uri, String body) {
+    private void call(String uri, String body) {
         HttpHeaders header = new HttpHeaders();
 
         header.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
